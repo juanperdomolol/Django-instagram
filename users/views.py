@@ -17,6 +17,7 @@ from users.models import Profile
 from users.forms import ProfileForm
 # Create your views here.
 
+@login_required
 def update_profile(request):
     """ Update a user's profile view """
     profile = request.user.profile
@@ -51,7 +52,7 @@ def update_profile(request):
 def login_view(request):
     """login view. """ 
     if request.user.is_authenticated:
-            redirect("posts")
+            redirect("feed")
             
     if request.method == 'POST':
         username = request.POST['username']
@@ -59,7 +60,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user :
             login(request, user)
-            return redirect('/posts')
+            return redirect('feed')
         else:
             return render(request, 'users/login.html',{'error':'Invalid Username or Password'})
 
